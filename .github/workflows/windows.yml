@@ -1,0 +1,116 @@
+name: Windows
+
+on: [push, pull_request]
+
+jobs:
+  x86_64-windows-msvc:
+    name: x86_64-Windows-MSVC
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          target: x86_64-pc-windows-msvc
+          toolchain: nightly
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --all-features
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+      - name: Bench
+        uses: actions-rs/cargo@v1
+        with:
+          command: bench
+          args: --all-features
+
+  x86_64-windows-gnu:
+    name: x86_64-Windows-GNU
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          target: x86_64-pc-windows-gnu
+          toolchain: nightly
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --all-features
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+      - name: Bench
+        uses: actions-rs/cargo@v1
+        with:
+          command: bench
+          args: --all-features
+
+  i686-windows-msvc:
+    name: i686-Windows-MSVC
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          target: i686-pc-windows-msvc
+          toolchain: nightly
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --all-features
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+      - name: Bench
+        uses: actions-rs/cargo@v1
+        with:
+          command: bench
+          args: --all-features
+
+  i686-windows-gnu:
+    name: i686-Windows-GNU
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          target: i686-pc-windows-gnu
+          toolchain: nightly
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --all-features
+      - name: Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+      - name: Bench
+        uses: actions-rs/cargo@v1
+        with:
+          command: bench
+          args: --all-features
