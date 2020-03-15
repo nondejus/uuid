@@ -79,23 +79,25 @@
 //! ```rust
 //! use uuid::Uuid;
 //!
-//! fn main() {
+//! fn main() -> Result<(), uuid::Error> {
 //!     let my_uuid =
-//!         Uuid::parse_str("936DA01F9ABD4d9d80C702AF85C822A8").unwrap();
+//!         Uuid::parse_str("936DA01F9ABD4d9d80C702AF85C822A8")?;
 //!     println!("{}", my_uuid.to_urn());
+//!     Ok(())
 //! }
 //! ```
 //!
 //! To create a new random (V4) UUID and print it out in hexadecimal form:
 //!
-//! ```ignore,rust
+//! ```rust
 //! // Note that this requires the `v4` feature enabled in the uuid crate.
 //!
 //! use uuid::Uuid;
 //!
-//! fn main() -> Result<(), Box<std::error::Error> {
+//! fn main() -> Result<(), Box<dyn std::error::Error>> {
 //!     let my_uuid = Uuid::new_v4()?;
 //!     println!("{}", my_uuid);
+//!     Ok(())
 //! }
 //! ```
 //!
@@ -109,10 +111,8 @@
 //!
 //! # References
 //!
-//! * [Wikipedia: Universally Unique
-//!   Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier)
-//! * [RFC4122: A Universally Unique IDentifier (UUID) URN
-//!   Namespace](http://tools.ietf.org/html/rfc4122)
+//! * [Wikipedia: Universally Unique Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier)
+//! * [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122)
 //!
 //! [`wasm-bindgen`]: https://crates.io/crates/wasm-bindgen
 //! [`cargo-web`]: https://crates.io/crates/cargo-web
@@ -330,19 +330,23 @@ impl Uuid {
     /// ```
     /// use uuid::Uuid;
     ///
-    /// let uuid = Uuid::nil();
-    /// assert_eq!(uuid.as_fields(), (0, 0, 0, &[0u8; 8]));
+    /// fn main() -> Result<(), uuid::Error> {
+    ///     let uuid = Uuid::nil();
+    ///     assert_eq!(uuid.as_fields(), (0, 0, 0, &[0u8; 8]));
     ///
-    /// let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8").unwrap();
-    /// assert_eq!(
-    ///     uuid.as_fields(),
-    ///     (
-    ///         0x936DA01F,
-    ///         0x9ABD,
-    ///         0x4D9D,
-    ///         b"\x80\xC7\x02\xAF\x85\xC8\x22\xA8"
-    ///     )
-    /// );
+    ///     let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8")?;
+    ///     assert_eq!(
+    ///         uuid.as_fields(),
+    ///         (
+    ///             0x936DA01F,
+    ///             0x9ABD,
+    ///             0x4D9D,
+    ///             b"\x80\xC7\x02\xAF\x85\xC8\x22\xA8"
+    ///         )
+    ///     );
+    ///
+    ///     Ok(())
+    /// }
     /// ```
     pub fn as_fields(&self) -> (u32, u16, u16, &[u8; 8]) {
         let d1 = u32::from(self.as_bytes()[0]) << 24
@@ -371,16 +375,19 @@ impl Uuid {
     /// ```
     /// use uuid::Uuid;
     ///
-    /// let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8").unwrap();
-    /// assert_eq!(
-    ///     uuid.to_fields_le(),
-    ///     (
-    ///         0x1FA06D93,
-    ///         0xBD9A,
-    ///         0x9D4D,
-    ///         b"\x80\xC7\x02\xAF\x85\xC8\x22\xA8"
-    ///     )
-    /// );
+    /// fn main() -> Result<(), uuid::Error> {
+    ///     let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8")?;
+    ///     assert_eq!(
+    ///         uuid.to_fields_le(),
+    ///         (
+    ///             0x1FA06D93,
+    ///             0xBD9A,
+    ///             0x9D4D,
+    ///             b"\x80\xC7\x02\xAF\x85\xC8\x22\xA8"
+    ///         )
+    ///     );
+    ///     Ok(())
+    /// }
     /// ```
     pub fn to_fields_le(&self) -> (u32, u16, u16, &[u8; 8]) {
         let d1 = u32::from(self.as_bytes()[0])
@@ -409,11 +416,14 @@ impl Uuid {
     /// ```
     /// use uuid::Uuid;
     ///
-    /// let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8").unwrap();
-    /// assert_eq!(
-    ///     uuid.as_u128(),
-    ///     0x936DA01F9ABD4D9D80C702AF85C822A8,
-    /// )
+    /// fn main() -> Result<(), uuid::Error> {
+    ///     let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8")?;
+    ///     assert_eq!(
+    ///         uuid.as_u128(),
+    ///         0x936DA01F9ABD4D9D80C702AF85C822A8,
+    ///     );
+    ///     Ok(())
+    /// }
     /// ```
     pub fn as_u128(&self) -> u128 {
         u128::from(self.as_bytes()[0]) << 120
@@ -446,12 +456,15 @@ impl Uuid {
     /// ```
     /// use uuid::Uuid;
     ///
-    /// let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8").unwrap();
+    /// fn main() -> Result<(), uuid::Error> {
+    ///     let uuid = Uuid::parse_str("936DA01F-9ABD-4D9D-80C7-02AF85C822A8")?;
     ///
-    /// assert_eq!(
-    ///     uuid.to_u128_le(),
-    ///     0xA822C885AF02C7809D4DBD9A1FA06D93,
-    /// )
+    ///     assert_eq!(
+    ///         uuid.to_u128_le(),
+    ///         0xA822C885AF02C7809D4DBD9A1FA06D93,
+    ///     );
+    ///     Ok(())
+    /// }
     /// ```
     pub fn to_u128_le(&self) -> u128 {
         u128::from(self.as_bytes()[0])
